@@ -1,110 +1,208 @@
-# Elaine Paula Hernandez — Portfolio
+# Personal Portfolio Website
 
-A retro-desktop portfolio (React + Vite) with a built-in blog. Visitors search public posts; the owner logs in to write rich-text posts with images, charts and links, and to swap the resume PDF. Posts, images and the resume are stored in **Supabase** (free tier), so everyone sees them.
+A retro-desktop-style personal portfolio built with **React and Vite**, featuring an interactive desktop-inspired interface, personal profile, projects, achievements, social links, and an integrated blog.
+
+The website includes an owner-only dashboard for publishing blog posts with rich text, images, charts, and links, as well as updating a resume PDF. **Supabase** handles cloud storage, authentication, and database management, allowing published content to be accessed by visitors across devices.
+
+## Features
+
+- **Retro desktop UI** — A desktop-inspired interface with interactive sections.
+- **Personal portfolio** — Showcase your profile, skills, projects, experience, and achievements.
+- **Integrated blog** — Publish, browse, and search blog posts.
+- **Rich-text editor** — Create posts with formatted text, images, charts, and links.
+- **Owner authentication** — Secure owner login for managing portfolio content.
+- **Cloud database** — Store and retrieve blog posts using Supabase.
+- **Image storage** — Upload and store blog images using Supabase Storage.
+- **Resume management** — Replace your resume PDF without rebuilding the website when using Supabase.
+- **Customizable theme** — Change colours, backgrounds, and profile information.
+- **Responsive design** — Designed to provide a consistent experience across screen sizes.
+- **Local-only mode** — Run the portfolio without Supabase using browser-local storage and the configured owner passcode.
+
+## Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| React | User interface |
+| Vite | Development server and build tool |
+| JavaScript | Application logic |
+| CSS | Styling and layout |
+| Supabase | Database, authentication, and cloud storage |
+| DOMPurify | Sanitizing rich-text HTML |
+| Git & GitHub | Version control and source code hosting |
+| Netlify | Website deployment |
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18 or newer
+- npm
+- Git (optional, for version control)
+- A Supabase account (optional)
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Dhruv-Vashist/Portfolio.git
+cd Portfolio
+```
+
+
+### 2. Install dependencies
 
 ```bash
 npm install
-cp .env.example .env     # fill in your Supabase keys (see below)
-npm run dev              # http://localhost:5173
-npm run build            # production build → dist/
 ```
-Requires Node 18+. On Windows, run `npm run dev` in PowerShell or Command Prompt.
 
-Without Supabase keys the site still works in **local-only mode** (posts live in your browser, owner passcode from `.env`).
+### 3. Configure environment variables
+
+Create a `.env` file from the example file.
+
+**Windows PowerShell:**
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Add your Supabase project credentials to `.env`:
+
+```env
+VITE_SUPABASE_URL=https://YOUR-PROJECT.supabase.co
+VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
+VITE_OWNER_EMAIL=your-email@example.com
+```
+
+If Supabase is not configured, the application can run in local-only mode, subject to the project's local configuration.
+
+**Important:** Never commit your `.env` file or expose your Supabase `service_role` key.
+
+### 4. Start the development server
+
+```bash
+npm run dev
+```
+
+Open the local URL displayed in your terminal, usually:
+
+`http://localhost:5173`
+
+### 5. Build for production
+
+```bash
+npm run build
+```
+
+The optimized production files will be generated in the `dist/` directory.
+
+## Customization
+
+Personalize the portfolio using the files below.
+
+| File | Purpose |
+|---|---|
+| `src/data/content.js` | Profile information, introduction, skills, projects, achievements, and social links |
+| `src/data/theme.js` | Colour presets and background settings |
+| `src/data/seedPosts.js` | Initial or sample blog posts |
+| `index.html` | Browser tab title and page metadata |
+| `public/profile.jpg` | Profile photo |
+| `public/resume.pdf` | Local resume fallback |
+| `public/background.jpg` | Optional background image |
+
+You can customize the website without changing its core application logic.
+
+## Supabase Setup
+
+Supabase provides cloud database functionality, authentication, and file storage.
+
+1. Create a project in the [Supabase Dashboard](https://supabase.com/dashboard).
+2. Run the SQL script in `supabase/schema.sql` using the Supabase SQL Editor. Replace any example owner email with your own.
+3. Create your owner account in Supabase Authentication.
+4. Disable public user registration if the application is intended for a single owner.
+5. Copy your project URL and anon/public key into `.env`.
+6. Configure the appropriate database and storage permissions.
+7. Restart the development server.
+
+The application uses Supabase Row Level Security (RLS) to control access to database records. Review the policies in `supabase/schema.sql` before deploying.
+
+## Deployment
+
+The portfolio can be deployed using Netlify.
+
+### Option 1: Manual deployment
+
+1. Run `npm run build`.
+2. Open [Netlify Drop](https://app.netlify.com/drop).
+3. Upload the generated `dist/` directory.
+
+### Option 2: GitHub integration
+
+1. Push the project to GitHub.
+2. Import the repository into Netlify.
+3. Set the build command to `npm run build`.
+4. Set the publish directory to `dist`.
+5. Add the required environment variables in Netlify's site configuration.
+6. Deploy the website.
+
+Connect the deployed website to the appropriate Supabase authentication URL configuration.
+
+## Project Structure
+
+```text
+├── public/
+│   ├── profile.jpg
+│   ├── resume.pdf
+│   └── background.jpg
+├── supabase/
+│   └── schema.sql
+├── src/
+│   ├── components/
+│   │   ├── Icons.jsx
+│   │   ├── Window.jsx
+│   │   ├── Taskbar.jsx
+│   │   └── Editor.jsx
+│   ├── data/
+│   │   ├── content.js
+│   │   ├── theme.js
+│   │   └── seedPosts.js
+│   ├── lib/
+│   │   ├── supabase.js
+│   │   ├── admin.jsx
+│   │   ├── blogStore.js
+│   │   ├── storage.js
+│   │   ├── useResume.js
+│   │   ├── applyTheme.js
+│   │   ├── chart.js
+│   │   └── sanitize.js
+│   ├── sections/
+│   │   ├── Home
+│   │   ├── Experience
+│   │   ├── Projects
+│   │   ├── Achievements
+│   │   ├── Blog
+│   │   └── Connect
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── styles.css
+├── .env.example
+├── .gitignore
+├── index.html
+├── netlify.toml
+├── package.json
+└── README.md
+```
+
+## Future Improvements
+
+- Expand the project showcase with technical case studies.
+- Add more graphics programming and software development projects.
+- Document technical experiments, development progress, and learnings through the blog.
+- Improve accessibility and responsive behaviour.
+- Continue refining the interface and user experience.
+
+## License
+
+Choose and add a license file if you intend to allow others to reuse, modify, or distribute this project.
 
 ---
 
-## 1. Make it yours (no coding needed)
-
-| What | Where |
-| --- | --- |
-| Name, tagline, about text, email, jobs, projects, tools, achievements | `src/data/content.js` |
-| **Colour scheme + background** | `src/data/theme.js` |
-| **Profile photo** | replace `public/profile.jpg` (square, ≥ 400 px) — same filename, or change `photo:` in `content.js` |
-| **Social icons / links** | `socials` list in `src/data/content.js` |
-| Tab title / description | `index.html` |
-
-### Colours and background — `src/data/theme.js`
-```js
-export const theme = {
-  preset: 'olive',          // 'olive' | 'ocean' | 'rose' | 'lavender' | 'night'
-  custom: { orange: '#ff3366' },   // override any single colour
-  background: { style: 'grid', image: '/background.jpg' },  // 'grid' | 'dots' | 'plain' | 'image'
-};
-```
-For a photo background, put the file in `public/` (e.g. `public/background.jpg`) and set `style: 'image'`. The comment block in the file explains what every colour name controls.
-
-### Social icons — `socials` in `src/data/content.js`
-Built-in icon ids: `linkedin github youtube reddit discord twitter` (alias `x`) `codeforces instagram behance dribbble website email`.
-```js
-{ id: 'youtube', label: 'YouTube', url: 'https://www.youtube.com/@you' },
-{ id: 'leetcode', label: 'LeetCode', url: 'https://leetcode.com/u/you', color: '#f89f1b', letter: 'L' }, // any other site
-```
-Delete a line to remove an icon, add a line to add one. They appear in the taskbar and the Connect page, in list order. (Discord has no public profile page — use your user link `https://discord.com/users/<your numeric id>` or a server invite.)
-
-### Resume
-- **Easiest, any time:** log in as owner → open **Connect** → *Owner: replace resume* → pick a PDF (max 10 MB). Visitors get the new file immediately, no redeploy.
-- **Without Supabase:** replace `public/resume.pdf` and redeploy.
-
----
-
-## 2. Supabase setup (one time, ~10 minutes)
-
-1. Go to <https://supabase.com> → sign up → **New project** (any name; choose a region near you; save the database password).
-2. **SQL Editor → New query**: open `supabase/schema.sql`, change `YOUR_EMAIL@example.com` to **your** email, paste the whole file, **Run**. This creates the tables, file buckets and security rules (visitors can read only *public* posts; only you can write).
-3. **Authentication → Users → Add user → Create new user**: use that same email + a strong password; tick **Auto Confirm User**.
-4. **Authentication → Sign In / Providers → Email**: turn **off** “Allow new users to sign up” (so nobody else can create accounts).
-5. **Project Settings → API**: copy the **Project URL** and the **anon public** key (never the `service_role` key).
-6. Put them in `.env`:
-   ```
-   VITE_SUPABASE_URL=https://xxxx.supabase.co
-   VITE_SUPABASE_ANON_KEY=eyJ...
-   VITE_OWNER_EMAIL=you@example.com
-   ```
-7. Restart `npm run dev`. Blog → **🔒 Owner login** → your email + password.
-
-**Security model:** the anon key is meant to be public. What protects your data is row-level security in `schema.sql` — private/draft posts are never sent to visitors, and writes need your login.
-
-## 3. Publish on Netlify
-
-**A. Drag-and-drop (fastest)**
-1. `npm run build` (the build reads your `.env`, so the Supabase keys are included).
-2. Open <https://app.netlify.com/drop> and drag the **`dist`** folder in. You get a `*.netlify.app` link.
-3. To update later: rebuild and drag `dist` onto *Deploys* in your site.
-
-**B. From GitHub (auto-redeploys on every push — recommended)**
-1. Create an empty repo on GitHub, then in the project folder:
-   ```bash
-   git init
-   git add .
-   git commit -m "Portfolio"
-   git branch -M main
-   git remote add origin https://github.com/YOUR-USER/YOUR-REPO.git
-   git push -u origin main
-   ```
-   (`.env` is git-ignored, so your keys are not uploaded.)
-2. Netlify → **Add new site → Import an existing project → GitHub** → pick the repo. Build command `npm run build`, publish directory `dist` (already set in `netlify.toml`).
-3. **Site configuration → Environment variables**: add `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_OWNER_EMAIL` (and optionally `VITE_FORMSPREE_ENDPOINT`), then **Deploys → Trigger deploy**.
-4. Optional: *Domain management* to rename the site or add your own domain.
-5. In Supabase → **Authentication → URL Configuration**, set **Site URL** to your Netlify address.
-
----
-
-## Folder structure
-```
-├─ index.html  netlify.toml  package.json  .env.example
-├─ supabase/schema.sql          database + storage + security rules
-├─ public/                      profile.jpg, resume.pdf (fallback), background.jpg (optional)
-└─ src/
-   ├─ App.jsx  main.jsx  styles.css
-   ├─ data/    content.js (your info) · theme.js (colours/background) · seedPosts.js
-   ├─ lib/     supabase.js · admin.jsx (login) · blogStore.js (posts) · storage.js (images, resume)
-   │           useResume.js · applyTheme.js · chart.js · sanitize.js
-   ├─ components/  Icons.jsx · Window.jsx · Taskbar.jsx · Editor.jsx
-   └─ sections/    Home · Experience · Projects · Achievements · Blog · Connect
-```
-
-## Notes
-- Blog search runs in the browser over the posts it receives (fine for a personal blog).
-- Rich text is sanitised with DOMPurify on save and on display.
-- Images you insert in posts are resized to ≤ 1400 px and uploaded to Supabase Storage.
+**Built with React, Vite, and Supabase.**
